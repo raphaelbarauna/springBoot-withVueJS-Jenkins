@@ -20,7 +20,14 @@ pipeline {
                     sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=demo -Dsonar.host.url=http://172.21.0.2:9000 -Dsonar.login=dd362fd30c624f009d76cdec5b9bdc3806fe6c59 -Dsonar.java.binaries=target"
                 }
             }
-        }                                            
+        }
+        stage ('Quality Gate') {
+            steps { 
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeLine: true
+                }
+            }
+        }                                             
     }
 }
 
